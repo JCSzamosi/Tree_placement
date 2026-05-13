@@ -1,0 +1,9 @@
+*.swp
+*.swo
+data/*
+refs/*
+intermed/*
+results/*
+logs/*
+lib/apples_env/*
+lib/depp_test.sif
