@@ -45,9 +45,11 @@ then
 	threads=8
 fi
 
-echo sina -r $ref -i $inf -o ${outf}  -p $threads\
-	--fasta-write-dna -t --preserve-order\
-	--outtype="fasta" --insertion="forbid" 
+echo "sina -r $ref -i $inf -o ${outf}  -p $threads\
+	--fasta-write-dna -t --preserve-order -v\
+	--outtype="fasta" --insertion="remove" \
+	--fs-req-gaps=0 2> ${outf}.log"
 sina -r $ref -i $inf -o ${outf}  -p $threads\
-	--fasta-write-dna -t --preserve-order\
-	--outtype="fasta" --insertion="forbid" 
+	--fasta-write-dna -t --preserve-order -v\
+	--outtype="fasta" --insertion="remove" \
+	--fs-req-gaps=0 2> ${outf}.log
