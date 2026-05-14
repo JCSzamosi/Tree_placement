@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 
-while getopts "e:t:o:@:d:q:r:" arg
+while getopts "e:t:o:@:d:q:r:p:" arg
 do
 	case $arg in
 		e)venv=$OPTARG;;
@@ -56,23 +56,25 @@ then
 	resd=results/
 fi
 
-module load python/3.14.2 gappa/0.9.0
+module load python/3.11.5 gappa/0.9.0
 
-echo mkdir -p $resd
-mkdir -p $resd
+echo mkdir -p $resd/${pref}_jplace
+mkdir -p $resd/${pref}_jplace
 
 # Load the virtual env
 
+#jplace=${resd}/${pref}_jplace/${pref}.jplace
 jplace=${resd}/${pref}.jplace
 
 echo source $venv/bin/activate
 source $venv/bin/activate
+# export PATH=$venv/bin:$PATH
 
 echo run_apples.py -t $tree -o $jplace -T $threads -d $dist
-run_apples.py -t $tree -o $jplace -T $threads -d $dist
+run_apples.py -t $tree -o $jplace -T $threads -d $dist 2> $resd/${pref}.log
 
-echo gappa examine graft --jplace-path $resd --out-dir $resd
-gappa examine graft --jplace-path $resd --out-dir $resd
+echo gappa examine graft --jplace-path $jplace --out-dir $resd
+gappa examine graft --jplace-path $jplace --out-dir $resd
 
 qids=${resd}/${pref}_ids.txt
 echo ./scripts/prep_tree/02_get_ref_ids.sh -r $query -o $qids
@@ -80,5 +82,5 @@ echo ./scripts/prep_tree/02_get_ref_ids.sh -r $query -o $qids
 
 outf=${resd}/${pref}_pruned_tree.nwk
 
-echo nw_prune -v -f $tree $qids > $outf
-nw_prune -v -f $tree $qids > $outf
+echo "nw_prune -v -f ${resd}/${pref}.newick $qids > $outf"
+nw_prune -v -f ${resd}/${pref}.newick $qids > $outf

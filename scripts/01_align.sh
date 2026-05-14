@@ -9,7 +9,7 @@
 #SBATCH --account=rrg-surette
 
 
-# Convert the backbone fasta alignment to arb format
+# Align the query sequences to the backbone fasta
 
 while getopts "r:i:o:p:" arg
 do
@@ -23,7 +23,7 @@ done
 
 if [[ -z $ref ]]
 then
-	echo "Must supply a reference fasta with -r"
+	echo "Must supply a reference ARB file with -r"
 	exit 1
 fi
 

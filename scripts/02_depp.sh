@@ -9,19 +9,20 @@
 #SBATCH --account=rrg-surette
 
 
-while getopts "r:q:m:o:" arg
+while getopts "r:q:m:o:c:" arg
 do
 	case $arg in
 		r)ref=$OPTARG;;
 		q)query=$OPTARG;;
 		m)model=$OPTARG;;
 		o)outf=$OPTARG;;
+		c)cont=$OPTARG;;
 	esac
 done
 
 if [[ -z $ref ]]
 then
-	echo "Must supply a reference database with -r"
+	echo "Must supply a reference fasta with -r"
 	exit 1
 fi
 
@@ -43,11 +44,18 @@ then
 	exit 1
 fi
 
+if [[ -z $cont ]]
+then
+	echo "Must supply a container file with -c"
+	exit 1
+fi
+
+
 echo module load apptainer
 module load apptainer
 
-echo apptainer run depp_test.sif ./scripts/run_depp.sh -r $ref -q $query -m $model
-apptainer run depp_test.sif ./scripts/run_depp.sh -r $ref -q $query -m $model
+echo apptainer run $cont ./scripts/run_depp.sh -r $ref -q $query -m $model
+apptainer run $cont ./scripts/run_depp.sh -r $ref -q $query -m $model
 
 echo mv depp_distance/depp.csv $outf
 mv depp_distance/depp.csv $outf
